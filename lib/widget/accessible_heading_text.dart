@@ -33,23 +33,22 @@ class AccessiblyHeadingText extends StatelessWidget {
   Widget build(BuildContext context) {
     final accessibilitySettings = context.watch<Accessibly>();
 
-    final Color? textColor = style?.color;
-    final Color? fallbackColor =
-        accessibilitySettings.stringToColor(accessibilitySettings.headingColor);
-
-    final bool isBlackOrWhite =
-        textColor == Colors.black || textColor == Colors.white;
-
-    final Color? finalColor =
-        isBlackOrWhite ? fallbackColor : textColor ?? fallbackColor;
-
     final boxBorder = accessibilitySettings.cognitiveMode
         ? Border.all(color: Colors.blue, width: 2.0)
         : null;
 
-    TextStyle? textstyle = (style ?? const TextStyle()).copyWith(
-      color: finalColor,
-    );
+    TextStyle? textstyle = (style ?? const TextStyle());
+
+    if (accessibilitySettings.textBgColor != null) {
+      textstyle = textstyle.copyWith(color: accessibilitySettings.textBgColor);
+    }
+
+    if (accessibilitySettings.headingColor != null) {
+      final Color? fallbackColor = accessibilitySettings
+          .stringToColor(accessibilitySettings.headingColor);
+
+      textstyle = textstyle.copyWith(color: fallbackColor);
+    }
 
     if (accessibilitySettings.textScaleFactor != 100) {
       textstyle = textstyle.copyWith(
@@ -105,7 +104,7 @@ class AccessiblyHeadingText extends StatelessWidget {
         locale: locale,
         softWrap: softWrap,
         overflow: overflow,
-        textScaleFactor: textScaleFactor,
+        // textScaleFactor: textScaleFactor,
         textHeightBehavior: textHeightBehavior,
         selectionColor: selectionColor,
       ),
