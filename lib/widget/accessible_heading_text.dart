@@ -47,18 +47,34 @@ class AccessiblyHeadingText extends StatelessWidget {
         ? Border.all(color: Colors.blue, width: 2.0)
         : null;
 
-    const baseFontSize = 20.0;
-
     TextStyle? textstyle = (style ?? const TextStyle()).copyWith(
-      fontWeight: style?.fontWeight ??
-          (accessibilitySettings.impairedMode
-              ? FontWeight.bold
-              : FontWeight.normal),
-      fontSize: ((style?.fontSize ?? baseFontSize) *
-          (accessibilitySettings.textScaleFactor / 100) *
-          (accessibilitySettings.impairedMode ? 1.2 : 1)),
       color: finalColor,
     );
+
+    if (accessibilitySettings.textScaleFactor != 100) {
+      textstyle = textstyle.copyWith(
+          fontSize: (textstyle.fontSize ?? 20) *
+              accessibilitySettings.textScaleFactor /
+              100);
+    }
+
+    if (accessibilitySettings.impairedMode) {
+      textstyle = textstyle.copyWith(
+        fontSize: (textstyle.fontSize ?? 14) * 1.2,
+        fontWeight: style?.fontWeight ??
+            (accessibilitySettings.impairedMode
+                ? FontWeight.bold
+                : FontWeight.normal),
+      );
+    }
+
+    if (accessibilitySettings.monochrome) {
+      final Color? monochromeColor = accessibilitySettings
+          .stringToColor(accessibilitySettings.headingColor);
+
+      textstyle =
+          textstyle.copyWith(color: monochromeColor, backgroundColor: null);
+    }
 
     if (accessibilitySettings.letterSpacing != 100) {
       textstyle = textstyle.copyWith(
@@ -74,7 +90,7 @@ class AccessiblyHeadingText extends StatelessWidget {
 
     return Container(
       padding: accessibilitySettings.cognitiveMode
-          ? const EdgeInsets.all(8.0)
+          ? const EdgeInsets.all(4.0)
           : const EdgeInsets.all(0.0),
       decoration: BoxDecoration(
         color: style?.backgroundColor ?? accessibilitySettings.textBgColor,

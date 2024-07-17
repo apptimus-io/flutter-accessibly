@@ -185,8 +185,12 @@ class Accessibly extends ChangeNotifier {
       _originalImageColor = colorToString(_imageColor);
 
       // Set colors to grey when monochrome mode is on
-      _textColor = Colors.grey.value.toString();
-      _headingColor = Colors.grey.value.toString();
+      _textColor = _isDark
+          ? Colors.white.value.toString()
+          : Colors.grey.value.toString();
+      _headingColor = _isDark
+          ? Colors.white.value.toString()
+          : Colors.black.value.toString();
       _imageColor = Colors.grey;
       if (_headingColor != null) {
         storage!.setString("headingColor", _headingColor!);
