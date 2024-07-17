@@ -65,9 +65,19 @@ class AccessiblyText extends StatelessWidget {
           (accessibilitySettings.textScaleFactor / 100) *
           (accessibilitySettings.impairedMode ? 1.2 : 1)),
       color: finalColor,
-      height: accessibilitySettings.lineHeight,
-      letterSpacing: accessibilitySettings.letterSpacing,
     );
+
+    if (accessibilitySettings.letterSpacing != 100) {
+      textstyle = textstyle.copyWith(
+        letterSpacing: (accessibilitySettings.letterSpacing - 100) / 10,
+      );
+    }
+
+    if (accessibilitySettings.lineHeight > 0) {
+      textstyle = textstyle.copyWith(
+        height: (accessibilitySettings.lineHeight) / 10,
+      );
+    }
 
     return Text(
       data,

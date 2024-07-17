@@ -49,6 +49,29 @@ class AccessiblyHeadingText extends StatelessWidget {
 
     const baseFontSize = 20.0;
 
+    TextStyle? textstyle = (style ?? const TextStyle()).copyWith(
+      fontWeight: style?.fontWeight ??
+          (accessibilitySettings.impairedMode
+              ? FontWeight.bold
+              : FontWeight.normal),
+      fontSize: ((style?.fontSize ?? baseFontSize) *
+          (accessibilitySettings.textScaleFactor / 100) *
+          (accessibilitySettings.impairedMode ? 1.2 : 1)),
+      color: finalColor,
+    );
+
+    if (accessibilitySettings.letterSpacing != 100) {
+      textstyle = textstyle.copyWith(
+        letterSpacing: (accessibilitySettings.letterSpacing - 100) / 10,
+      );
+    }
+
+    if (accessibilitySettings.lineHeight > 0) {
+      textstyle = textstyle.copyWith(
+        height: (accessibilitySettings.lineHeight) / 10,
+      );
+    }
+
     return Container(
       padding: accessibilitySettings.cognitiveMode
           ? const EdgeInsets.all(8.0)
@@ -60,18 +83,7 @@ class AccessiblyHeadingText extends StatelessWidget {
       child: Text(
         data,
         textAlign: textAlign ?? accessibilitySettings.textAlignment,
-        style: (style ?? const TextStyle()).copyWith(
-          fontWeight: style?.fontWeight ??
-              (accessibilitySettings.impairedMode
-                  ? FontWeight.bold
-                  : FontWeight.normal),
-          fontSize: ((style?.fontSize ?? baseFontSize) *
-              (accessibilitySettings.textScaleFactor / 100) *
-              (accessibilitySettings.impairedMode ? 1.2 : 1)),
-          color: finalColor,
-          height: accessibilitySettings.lineHeight,
-          letterSpacing: accessibilitySettings.letterSpacing,
-        ),
+        style: textstyle,
         strutStyle: strutStyle,
         textDirection: textDirection,
         locale: locale,

@@ -17,8 +17,8 @@ class Accessibly extends ChangeNotifier {
   String? _textColor; // Default text color
   Color? _textBgColor; // Default text background color
   Color _scaldBgColor = Colors.white; // Default scaffold background color
-  double _lineHeight = 1.0; // Default line height
-  double _letterSpacing = 1.0;
+  int _lineHeight = 0; // Default line height
+  int _letterSpacing = 100;
   Color? _imageColor = Colors.white;
   bool _imageVisibility = true;
   TextAlign _textAlignment = TextAlign.left;
@@ -42,8 +42,8 @@ class Accessibly extends ChangeNotifier {
   String? get textColor => _textColor;
   Color? get textBgColor => _textBgColor;
   Color get scaldBgColor => _scaldBgColor;
-  double get lineHeight => _lineHeight;
-  double get letterSpacing => _letterSpacing;
+  int get lineHeight => _lineHeight;
+  int get letterSpacing => _letterSpacing;
   Color? get imageColor => _imageColor;
   bool get imageVisibility => _imageVisibility;
   TextAlign get textAlignment => _textAlignment;
@@ -98,9 +98,8 @@ class Accessibly extends ChangeNotifier {
     _impairedMode = storage?.getBool("impairedMode") ?? false;
     _adhd = storage?.getBool("adhd") ?? false;
     _cognitiveMode = storage?.getBool("cognitiveMode") ?? false;
-    _lineHeight = 1.0; // Use a default value
-    _letterSpacing = storage!.getDouble("letterSpacing") ?? 1.0;
-    _lineHeight = storage!.getDouble("lineHeight") ?? 1.0;
+    _letterSpacing = storage!.getInt("letterSpacing") ?? 100;
+    _lineHeight = storage!.getInt("lineHeight") ?? 0;
     _monochrome = storage?.getBool("monochrome") ?? false;
     _textScaleFactor = storage?.getInt("textScaleFactor") ?? 100;
     // final db = await AccessiblyDatasource.getDB();
@@ -289,35 +288,35 @@ class Accessibly extends ChangeNotifier {
   }
 
   void increaseLineHeight() async {
-    if (_lineHeight <= 3.0) {
-      _lineHeight += 0.1;
-      storage?.setDouble("lineHeight", _lineHeight);
+    if (_lineHeight <= 80) {
+      _lineHeight += 5;
+      storage?.setInt("lineHeight", _lineHeight);
 
       notifyListeners();
     }
   }
 
   void decreaseLineHeight() async {
-    if (_lineHeight > 0.5) {
-      _lineHeight -= 0.1;
-      storage?.setDouble("lineHeight", _lineHeight);
+    if (_lineHeight >= 5) {
+      _lineHeight -= 5;
+      storage?.setInt("lineHeight", _lineHeight);
 
       notifyListeners();
     }
   }
 
   void increaseLetterSpace() {
-    if (_letterSpacing <= 3.0) {
-      _letterSpacing += 0.1;
-      storage!.setDouble("letterSpacing", _letterSpacing);
+    if (_letterSpacing <= 150) {
+      _letterSpacing += 5;
+      storage!.setInt("letterSpacing", _letterSpacing);
       notifyListeners();
     }
   }
 
   void decreaseLetterSpace() {
-    if (_letterSpacing > 0.1) {
-      _letterSpacing -= 0.1;
-      storage!.setDouble("letterSpacing", _letterSpacing);
+    if (_letterSpacing >= 90) {
+      _letterSpacing -= 5;
+      storage!.setInt("letterSpacing", _letterSpacing);
       notifyListeners();
     }
   }
@@ -334,8 +333,8 @@ class Accessibly extends ChangeNotifier {
     _textBgColor = null;
     _scaldBgColor = Colors.white;
     _imageColor = Colors.white;
-    _lineHeight = 1.0;
-    _letterSpacing = 1.0;
+    _lineHeight = 0;
+    _letterSpacing = 100;
     _imageVisibility = true;
     _textAlignment = TextAlign.left;
     _isDark = false;
@@ -350,8 +349,8 @@ class Accessibly extends ChangeNotifier {
     storage?.setBool("imageVisibility", _imageVisibility);
     storage?.setString("headingColor", _headingColor ?? "");
     storage?.setString("textColor", _textColor ?? "");
-    storage?.setDouble("lineHeight", _lineHeight);
-    storage!.setDouble("letterSpacing", _letterSpacing);
+    storage?.setInt("lineHeight", _lineHeight);
+    storage!.setInt("letterSpacing", _letterSpacing);
     storage!.setInt("textScaleFactor", _textScaleFactor);
     storage?.setBool("monochrome", _monochrome);
     notifyListeners();
