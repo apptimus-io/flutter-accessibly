@@ -1,4 +1,4 @@
-import 'package:accessibility_features/widget/accessible_text.dart';
+import 'package:accessibly/widget/accessible_text.dart';
 import 'package:flutter/material.dart';
 
 class AlignWidget extends StatelessWidget {
@@ -30,7 +30,7 @@ class AlignWidget extends StatelessWidget {
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [Icon(icon), AccessibleText(text)],
+          children: [Icon(icon), AccessiblyText(text)],
         ),
       ),
     );

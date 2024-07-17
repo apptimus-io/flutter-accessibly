@@ -1,16 +1,16 @@
-import 'package:accessibility_features/accessibility_features.dart';
-import 'package:accessibility_features/widget/accessible_heading_text.dart';
-import 'package:accessibility_features/widget/accessible_text.dart';
-import 'package:accessibility_features/widget/align_widget.dart';
-import 'package:accessibility_features/widget/colorpicker.dart';
+import 'package:accessibly/accessibly.dart';
+import 'package:accessibly/widget/accessible_heading_text.dart';
+import 'package:accessibly/widget/accessible_text.dart';
+import 'package:accessibly/widget/align_widget.dart';
+import 'package:accessibly/widget/colorpicker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'widget/accessibility_list_item.dart';
 import 'widget/font_style_widget.dart';
 
-class AccessibilityScreen extends StatelessWidget {
-  const AccessibilityScreen({super.key});
+class AccessiblyScreen extends StatelessWidget {
+  const AccessiblyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AccessibilityScreen extends StatelessWidget {
       builder: (context, accessibilitySettings, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Accessibility Features',
+          title: 'Accessibly Features',
           themeMode: accessibilitySettings.systemMode
               ? ThemeMode.system
               : (accessibilitySettings.isDark
@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accessibility',
+        title: const Text('Accessibly',
             style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
       ),
       body: SingleChildScrollView(
@@ -57,14 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AccessibleHeadingText(
-              "Accessibility Modes",
+            const AccessiblyHeadingText(
+              "Accessibly Modes",
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(
               height: 20,
             ),
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText:
                   accessibilitySettings.isDark ? 'light mode' : 'Dark mode',
               description: 'Enable or disable dark mode',
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   : null,
             ),
 
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText: 'System default mode',
               description: 'Enable or disable system mode',
               value: accessibilitySettings.systemMode,
@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? (value) => accessibilitySettings.toggleSystem()
                   : null,
             ),
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText: "Monochrome",
               value: accessibilitySettings.monochrome == true,
               onChanged: (value) {
@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
 
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText: "Visually Impaired Mode",
               value: accessibilitySettings.impairedMode,
               onChanged: (value) {
@@ -102,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
 
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText: "Cognitive Disability  mode",
               value: accessibilitySettings.cognitiveMode,
               onChanged: (value) {
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
 
-            // AccessibilityListItem(
+            // AccessiblyListItem(
             //   titleText: "ADHD  mode",
             //   value: accessibilitySettings.adhd,
             //   onChanged: (value) {
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   },
             // ),
 
-            AccessibilityListItem(
+            AccessiblyListItem(
               titleText: accessibilitySettings.imageVisibility
                   ? 'Hide Image'
                   : 'Show Image',
@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 10,
             ),
 
-            const AccessibleHeadingText(
+            const AccessiblyHeadingText(
               " Readable Experience",
               style: TextStyle(fontSize: 20),
             ),
@@ -148,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
             FontStyleWidget(
                 increaseFontSize: accessibilitySettings.increaseFontSize,
                 decreaseFontSize: accessibilitySettings.decreaseFontSize,
-                fontSize: accessibilitySettings.currentFontSize.toInt(),
+                fontSize: (accessibilitySettings.textScaleFactor),
                 title: 'Font Size'),
 
             FontStyleWidget(
@@ -201,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 10,
             ),
-            const AccessibleHeadingText(
+            const AccessiblyHeadingText(
               "Visually Pleasing Experience",
               style: TextStyle(fontSize: 20),
             ),
@@ -210,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             // color change
             // ListTile(
-            //   title: const AccessibleHeadingText('Heading Color ',
+            //   title: const AccessiblyHeadingText('Heading Color ',
             //       style: TextStyle(fontSize: 17.0)),
             //   trailing: SizedBox(
             //     width: 150.0,
@@ -248,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   ),
             // ),
             // ListTile(
-            //   title: const AccessibleHeadingText('Adjust Text Colors',
+            //   title: const AccessiblyHeadingText('Adjust Text Colors',
             //       style: TextStyle(fontSize: 17.0)),
             //   trailing: SizedBox(
             //     width: 150.0,
@@ -283,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
             //   height: 15,
             // ),
             // ListTile(
-            //   title: const AccessibleHeadingText('Text BackgroundColor ',
+            //   title: const AccessiblyHeadingText('Text BackgroundColor ',
             //       style: TextStyle(fontSize: 18.0)),
             //   trailing: SizedBox(
             //     width: 150.0,
@@ -352,7 +352,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       accessibilitySettings.reset();
                     },
-                    child: const AccessibleText("Reset")),
+                    child: const AccessiblyText("Reset")),
               ),
             )
           ],
@@ -367,9 +367,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 // ListTile(
-            //   title: const AccessibleHeadingText('Font Size',
+            //   title: const AccessiblyHeadingText('Font Size',
             //       style: TextStyle(fontSize: 17.0)),
-            //   subtitle: const AccessibleText('Adjust font size',
+            //   subtitle: const AccessiblyText('Adjust font size',
             //       style: TextStyle(
             //         fontSize: 14.0,
             //       )),
@@ -393,9 +393,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // ),
 
             // ListTile(
-            //   title: const AccessibleHeadingText('Line Height ',
+            //   title: const AccessiblyHeadingText('Line Height ',
             //       style: TextStyle(fontSize: 17.0)),
-            //   subtitle: const AccessibleText('Adjust line Height',
+            //   subtitle: const AccessiblyText('Adjust line Height',
             //       style: TextStyle(
             //         fontSize: 14.0,
             //       )),
@@ -418,9 +418,9 @@ class _MyHomePageState extends State<MyHomePage> {
             //   ),
             // ),
             // ListTile(
-            //   title: const AccessibleHeadingText('Letter Space ',
+            //   title: const AccessiblyHeadingText('Letter Space ',
             //       style: TextStyle(fontSize: 17.0)),
-            //   subtitle: const AccessibleText(
+            //   subtitle: const AccessiblyText(
             //     'Adjust letter Space',
             //     style: TextStyle(
             //       fontSize: 14.0,
@@ -448,9 +448,9 @@ class _MyHomePageState extends State<MyHomePage> {
             //   height: 15,
             // ),
             // ListTile(
-            //   title: const AccessibleHeadingText(' Scalfold BackgroundColor: ',
+            //   title: const AccessiblyHeadingText(' Scalfold BackgroundColor: ',
             //       style: TextStyle(fontSize: 15.0)),
-            //   subtitle: const AccessibleText('Change  BackgroundColor',
+            //   subtitle: const AccessiblyText('Change  BackgroundColor',
             //       style: TextStyle(
             //         fontSize: 14.0,
             //       )),

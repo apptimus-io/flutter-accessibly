@@ -1,8 +1,8 @@
-import 'package:accessibility_features/accessibility_features.dart';
+import 'package:accessibly/accessibly.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccessibilityImage extends StatelessWidget {
+class AccessiblyImage extends StatelessWidget {
   final ImageProvider image;
   final double? width;
   final double? height;
@@ -23,7 +23,7 @@ class AccessibilityImage extends StatelessWidget {
   final bool gaplessPlayback;
   final bool isAntiAlias;
 
-  const AccessibilityImage({
+  const AccessiblyImage({
     required this.image,
     this.width,
     this.height,

@@ -1,4 +1,4 @@
-import 'package:accessibility_features/accessibility_features.dart';
+import 'package:accessibly/accessibly.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -6,6 +6,6 @@ void main() {
     final accessibly = Accessibly();
 
     expect(accessibly.colorBlindMode, false);
-    expect(accessibly.textScaleFactor, 1.0);
+    expect(accessibly.textScaleFactor, 100);
   });
 }

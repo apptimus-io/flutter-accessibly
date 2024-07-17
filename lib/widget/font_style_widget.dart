@@ -23,6 +23,9 @@ class FontStyleWidget extends StatefulWidget {
 class _FontStyleWidgetState extends State<FontStyleWidget> {
   @override
   Widget build(BuildContext context) {
+    print('-----------------');
+    print('${widget.title}');
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
@@ -37,9 +40,9 @@ class _FontStyleWidgetState extends State<FontStyleWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            AccessibleHeadingText(
+            AccessiblyHeadingText(
               widget.title,
-              style: const TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0, color: Colors.black),
             ),
             const SizedBox(width: 8.0),
             Row(
@@ -55,12 +58,12 @@ class _FontStyleWidgetState extends State<FontStyleWidget> {
                   },
                   tooltip: 'Decrease Font Size',
                 ),
-                // Text(
-                //   widget.fontSize == 0
-                //       ? "Default"
-                //       : '${(widget.fontSize).toStringAsFixed(0)}%',
-                //   style: const TextStyle(fontSize: 16.0),
-                // ),
+                Text(
+                  widget.fontSize == 0
+                      ? "Default"
+                      : '${(widget.fontSize).toStringAsFixed(0)}%',
+                  style: const TextStyle(fontSize: 16.0),
+                ),
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {

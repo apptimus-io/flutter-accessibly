@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'accessible_heading_text.dart';
 import 'accessible_text.dart';
 
-class AccessibilityListItem extends StatelessWidget {
+class AccessiblyListItem extends StatelessWidget {
   final String titleText;
   String? description;
   final bool value;
   final Function(bool)? onChanged;
 
-  AccessibilityListItem({
+  AccessiblyListItem({
     super.key,
     required this.titleText,
     this.description,
@@ -43,13 +43,13 @@ class AccessibilityListItem extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AccessibleHeadingText(
+              AccessiblyHeadingText(
                 titleText,
                 style: const TextStyle(
                     fontSize: 17.0, fontWeight: FontWeight.w500),
               ),
               if (description != null)
-                AccessibleText(
+                AccessiblyText(
                   description!,
                   style: const TextStyle(fontSize: 14.0),
                 ),

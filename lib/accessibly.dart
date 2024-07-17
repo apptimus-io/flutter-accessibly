@@ -8,12 +8,11 @@ enum AppTheme { light, dark, highContrast }
 
 class Accessibly extends ChangeNotifier {
   // AppTheme _currentTheme = AppTheme.light;
-  double _currentFontSize = 16.0;
   bool _colorBlindMode = false;
   bool _impairedMode = false;
   bool _cognitiveMode = false;
   bool _adhd = false;
-  double _textScaleFactor = 1.0;
+  int _textScaleFactor = 100;
   String? _headingColor; // Default heading color as string
   String? _textColor; // Default text color
   Color? _textBgColor; // Default text background color
@@ -33,13 +32,12 @@ class Accessibly extends ChangeNotifier {
 
   // Getter methods for accessing properties
   // AppTheme get currentTheme => _currentTheme;
-  double get currentFontSize => _currentFontSize;
   bool get colorBlindMode => _colorBlindMode;
   bool get impairedMode => _impairedMode;
   bool get adhd => _adhd;
   bool get cognitiveMode => _cognitiveMode;
   bool get monochrome => _monochrome;
-  double get textScaleFactor => _textScaleFactor;
+  int get textScaleFactor => _textScaleFactor;
   String? get headingColor => _headingColor;
   String? get textColor => _textColor;
   Color? get textBgColor => _textBgColor;
@@ -58,9 +56,8 @@ class Accessibly extends ChangeNotifier {
   // Constructor to initialize the theme
   Accessibly() {
     // _currentTheme = AppTheme.light;
-    _currentFontSize = 16.0;
     // _colorBlindMode = false;
-    _textScaleFactor = 1.0;
+    _textScaleFactor = 100;
     _originalImageColor = Colors.white.value.toString();
   }
 
@@ -104,11 +101,10 @@ class Accessibly extends ChangeNotifier {
     _lineHeight = 1.0; // Use a default value
     _letterSpacing = storage!.getDouble("letterSpacing") ?? 1.0;
     _lineHeight = storage!.getDouble("lineHeight") ?? 1.0;
-    _currentFontSize = storage!.getDouble("currentFontSize") ?? 16.0;
     _monochrome = storage?.getBool("monochrome") ?? false;
-
-    // final db = await AccessibilityDatasource.getDB();
-    // final settings = await AccessibilityDatasource.getAllAccessibility();
+    _textScaleFactor = storage?.getInt("textScaleFactor") ?? 100;
+    // final db = await AccessiblyDatasource.getDB();
+    // final settings = await AccessiblyDatasource.getAllAccessibly();
     // if (settings != null && settings.isNotEmpty) {
     //   final accessibilityModel = settings.first;
     //   _currentFontSize = accessibilityModel.currentFontSize ?? 16.0;
@@ -144,17 +140,18 @@ class Accessibly extends ChangeNotifier {
 
   // Method to increase font size
   void increaseFontSize() {
-    if (_currentFontSize <= 26) {
-      _currentFontSize += 2.0;
-
+    if (_textScaleFactor <= 160) {
+      _textScaleFactor += 20;
+      print(_textScaleFactor);
       updateTextScaleFactor();
     }
   }
 
   // Method to decrease font size
   void decreaseFontSize() {
-    if (_currentFontSize >= 11) {
-      _currentFontSize -= 2.0;
+    if (_textScaleFactor >= 60) {
+      _textScaleFactor -= 20;
+      print(_textScaleFactor);
       updateTextScaleFactor();
     }
   }
@@ -228,7 +225,7 @@ class Accessibly extends ChangeNotifier {
   }
 
   // Method to adjust text size
-  void adjustTextSize(double newTextScaleFactor) {
+  void adjustTextSize(int newTextScaleFactor) {
     _textScaleFactor = newTextScaleFactor;
 
     notifyListeners(); // Notify listeners to update UI
@@ -237,9 +234,7 @@ class Accessibly extends ChangeNotifier {
   // Method to update text scale factor
   void updateTextScaleFactor() {
     // Calculate text scale factor based on current font size
-    _textScaleFactor =
-        _currentFontSize / 16.0; // Assuming 16.0 is the base font size
-    storage?.setDouble("currentFontSize", _currentFontSize);
+    storage?.setInt("textScaleFactor", _textScaleFactor);
     notifyListeners(); // Notify listeners to update UI
   }
 
@@ -334,9 +329,8 @@ class Accessibly extends ChangeNotifier {
     _adhd = false;
     _cognitiveMode = false;
     _monochrome = false;
-    _currentFontSize = 16.0;
     _colorBlindMode = false;
-    _textScaleFactor = 1.0;
+    _textScaleFactor = 100;
     _textBgColor = null;
     _scaldBgColor = Colors.white;
     _imageColor = Colors.white;
@@ -358,6 +352,7 @@ class Accessibly extends ChangeNotifier {
     storage?.setString("textColor", _textColor ?? "");
     storage?.setDouble("lineHeight", _lineHeight);
     storage!.setDouble("letterSpacing", _letterSpacing);
+    storage!.setInt("textScaleFactor", _textScaleFactor);
     storage?.setBool("monochrome", _monochrome);
     notifyListeners();
   }

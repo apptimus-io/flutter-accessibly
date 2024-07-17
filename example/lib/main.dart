@@ -1,4 +1,4 @@
-import 'package:accessibility_features/accessibility_features.dart';
+import 'package:accessibly/accessibly.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_app/new.dart';
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       builder: (context, accessibilitySettings, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Accessibility Features',
+          title: 'Accessibly Features',
           themeMode: accessibilitySettings.systemMode
               ? ThemeMode.system
               : (accessibilitySettings.isDark

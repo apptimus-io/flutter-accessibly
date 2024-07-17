@@ -1,8 +1,8 @@
-import 'package:accessibility_features/accessibility_features.dart';
+import 'package:accessibly/accessibly.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccessibleText extends StatelessWidget {
+class AccessiblyText extends StatelessWidget {
   final String data;
   final TextStyle? style;
 
@@ -20,7 +20,7 @@ class AccessibleText extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
   final Color? selectionColor;
 
-  const AccessibleText(
+  const AccessiblyText(
     this.data, {
     super.key,
     this.style,
@@ -43,6 +43,7 @@ class AccessibleText extends StatelessWidget {
   Widget build(BuildContext context) {
     final accessibilitySettings = context.watch<Accessibly>();
 
+    // final TextStyle textStyle = style ?? const TextStyle();
     final Color? textColor = style?.color;
     final Color? fallbackColor =
         accessibilitySettings.stringToColor(accessibilitySettings.textColor);
@@ -53,29 +54,31 @@ class AccessibleText extends StatelessWidget {
     final Color? finalColor =
         isBlackOrWhite ? fallbackColor : textColor ?? fallbackColor;
 
+    TextStyle? textstyle = (style ?? const TextStyle()).copyWith(
+      fontWeight: style?.fontWeight ??
+          (accessibilitySettings.impairedMode
+              ? FontWeight.bold
+              : FontWeight.normal),
+      backgroundColor:
+          style?.backgroundColor ?? accessibilitySettings.textBgColor,
+      fontSize: ((style?.fontSize ?? 14) *
+          (accessibilitySettings.textScaleFactor / 100) *
+          (accessibilitySettings.impairedMode ? 1.2 : 1)),
+      color: finalColor,
+      height: accessibilitySettings.lineHeight,
+      letterSpacing: accessibilitySettings.letterSpacing,
+    );
+
     return Text(
       data,
       textAlign: accessibilitySettings.textAlignment,
-      style: (style ?? const TextStyle()).copyWith(
-        fontWeight: style?.fontWeight ??
-            (accessibilitySettings.impairedMode
-                ? FontWeight.bold
-                : FontWeight.normal),
-        backgroundColor:
-            style?.backgroundColor ?? accessibilitySettings.textBgColor,
-        fontSize: ((style?.fontSize ?? 14) *
-            accessibilitySettings.textScaleFactor *
-            (accessibilitySettings.impairedMode ? 1.2 : 1)),
-        color: finalColor,
-        height: accessibilitySettings.lineHeight,
-        letterSpacing: accessibilitySettings.letterSpacing,
-      ),
+      style: textstyle,
       strutStyle: strutStyle,
       textDirection: textDirection,
       locale: locale,
       softWrap: softWrap,
       overflow: overflow,
-      textScaleFactor: textScaleFactor,
+      // textScaleFactor: textScaleFactor,
       textScaler: textScaler,
       maxLines: maxLines,
       semanticsLabel: semanticsLabel,
@@ -84,4 +87,13 @@ class AccessibleText extends StatelessWidget {
       selectionColor: selectionColor,
     );
   }
+}
+
+Size _textSize(String text, TextStyle style) {
+  final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      maxLines: 1,
+      textDirection: TextDirection.ltr)
+    ..layout(minWidth: 0, maxWidth: double.infinity);
+  return textPainter.size;
 }

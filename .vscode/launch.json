@@ -6,18 +6,18 @@
     "configurations": [
         
         {
-            "name": "accessibility_features",
+            "name": "accessibly",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "accessibility_features (profile mode)",
+            "name": "accessibly (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "accessibility_features (release mode)",
+            "name": "accessibly (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

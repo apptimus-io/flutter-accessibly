@@ -14,7 +14,7 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_colorpicker: ^1.0.3
 
-  accessibility_features:
+  accessibly:
     path: ../
   provider: ^6.1.2
 

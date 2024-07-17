@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum MonochromeMode { off, on }
 
-class AccessibilityModel {
+class AccessiblyModel {
   final int id;
   double currentFontSize;
   bool colorBlindMode;
@@ -24,7 +24,7 @@ class AccessibilityModel {
   String? originalHeadingColor;
   String? originalImageColor;
 
-  AccessibilityModel({
+  AccessiblyModel({
     required this.id,
     required this.currentFontSize,
     required this.colorBlindMode,
@@ -47,8 +47,8 @@ class AccessibilityModel {
     required this.originalImageColor,
   });
 
-  factory AccessibilityModel.fromJson(Map<String, dynamic> json) {
-    return AccessibilityModel(
+  factory AccessiblyModel.fromJson(Map<String, dynamic> json) {
+    return AccessiblyModel(
       id: json['id'],
       currentFontSize: json['currentFontSize'],
       colorBlindMode: json['colorBlindMode'],

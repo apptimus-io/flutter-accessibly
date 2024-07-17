@@ -1,11 +1,11 @@
-// import 'package:accessibility_features/accessibility_features.dart';
-// import 'package:accessibility_features/infra/models/accessibility_model.dart';
+// import 'package:accessibly/accessibly.dart';
+// import 'package:accessibly/infra/models/accessibility_model.dart';
 // import 'package:path/path.dart';
 // import 'package:sqflite/sqflite.dart';
 
-// class AccessibilityDatasource {
+// class AccessiblyDatasource {
 //   static const int _version = 1;
-//   static const String _dbName = "Accessibility.db";
+//   static const String _dbName = "Accessibly.db";
 
 //   static Future<Database> getDB() async {
 //     return openDatabase(
@@ -38,48 +38,48 @@
 //     );
 //   }
 
-//   static Future<int> addAccessibility(
-//       AccessibilityModel accessibilityModel) async {
+//   static Future<int> addAccessibly(
+//       AccessiblyModel accessibilityModel) async {
 //     final db = await getDB();
 //     return await db.insert("AccessbilityModel", accessibilityModel.toJson(),
 //         conflictAlgorithm: ConflictAlgorithm.replace);
 //   }
 
-//   static Future<int> updateAccessibility(
-//       AccessibilityModel accessibilityModel) async {
+//   static Future<int> updateAccessibly(
+//       AccessiblyModel accessibilityModel) async {
 //     final db = await getDB();
-//     return await db.update("Accessibility", accessibilityModel.toJson(),
+//     return await db.update("Accessibly", accessibilityModel.toJson(),
 //         where: "id=?",
 //         whereArgs: [accessibilityModel.id],
 //         conflictAlgorithm: ConflictAlgorithm.replace);
 //   }
 
-//   // static Future<int> deleteAccessibility(
-//   //     AccessibilityModel accessibilityModel) async {
+//   // static Future<int> deleteAccessibly(
+//   //     AccessiblyModel accessibilityModel) async {
 //   //   final db = await getDB();
 //   //   return await db.delete(
-//   //     "Accessibility",
+//   //     "Accessibly",
 //   //     where: "id=?",
 //   //     whereArgs: [accessibilityModel.id],
 //   //   );
 //   // }
 
-//   static Future<List<AccessibilityModel>?> getAllAccessibility() async {
+//   static Future<List<AccessiblyModel>?> getAllAccessibly() async {
 //     final db = await getDB();
 
 //     final List<Map<String, dynamic>> maps =
-//         await db.query("AccessibilityModel");
+//         await db.query("AccessiblyModel");
 //     if (maps.isEmpty) {
 //       return null;
 //     }
 //     return List.generate(
-//         maps.length, (index) => AccessibilityModel.fromJson(maps[index]));
+//         maps.length, (index) => AccessiblyModel.fromJson(maps[index]));
 //   }
 
-//   Future<void> updateAccessibilitySettings(
+//   Future<void> updateAccessiblySettings(
 //       Accessibly settings) async {
 //     final db = await getDB();
-//     final accessibilityModel = AccessibilityModel(
+//     final accessibilityModel = AccessiblyModel(
 //       id: 1,
 //       headingColor: settings.headingColor,
 //       impairedMode: settings.impairedMode,

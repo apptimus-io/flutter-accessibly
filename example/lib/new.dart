@@ -1,8 +1,8 @@
-import 'package:accessibility_features/accessibility_features.dart';
-import 'package:accessibility_features/accessibility_screen.dart';
-import 'package:accessibility_features/widget/accessible_heading_text.dart';
-import 'package:accessibility_features/widget/accessible_text.dart';
-import 'package:accessibility_features/widget/accessiblity_image.dart';
+import 'package:accessibly/accessibly.dart';
+import 'package:accessibly/accessibility_screen.dart';
+import 'package:accessibly/widget/accessible_heading_text.dart';
+import 'package:accessibly/widget/accessible_text.dart';
+import 'package:accessibly/widget/accessiblity_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class MyWidget extends StatelessWidget {
         return Scaffold(
           backgroundColor: accessibly.textBgColor,
           appBar: AppBar(
-            title: const Text('Accessibility Features'),
+            title: const Text('Accessibly Features'),
             actions: [
               Builder(
                 // Wrap the IconButton with Builder widget
@@ -28,7 +28,7 @@ class MyWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const AccessibilityScreen(),
+                        builder: (context) => const AccessiblyScreen(),
                       ),
                     );
                   },
@@ -40,23 +40,23 @@ class MyWidget extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const AccessibleHeadingText(
-                  "Hello This is Accessibility...",
+                const AccessiblyHeadingText(
+                  "Hello This is Accessibly...",
                   style: TextStyle(fontSize: 30),
                 ),
                 const SizedBox(height: 20),
-                const AccessibleText(
+                const AccessiblyText(
                   "This is a simple text widget",
                   style: TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                     onPressed: () {},
-                    child: const AccessibleText(
+                    child: const AccessiblyText(
                       "This is a button",
                       style: TextStyle(fontSize: 20),
                     )),
-                const AccessibilityImage(
+                const AccessiblyImage(
                   image: AssetImage('assets/hello.png'),
                   width: 200,
                   height: 250,

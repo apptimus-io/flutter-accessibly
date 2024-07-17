@@ -1,8 +1,8 @@
-import 'package:accessibility_features/accessibility_features.dart';
+import 'package:accessibly/accessibly.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccessibleHeadingText extends StatelessWidget {
+class AccessiblyHeadingText extends StatelessWidget {
   final String data;
   final TextStyle? style;
 
@@ -16,7 +16,7 @@ class AccessibleHeadingText extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
   final Color? selectionColor;
 
-  const AccessibleHeadingText(this.data,
+  const AccessiblyHeadingText(this.data,
       {super.key,
       this.style,
       this.strutStyle,
@@ -66,7 +66,7 @@ class AccessibleHeadingText extends StatelessWidget {
                   ? FontWeight.bold
                   : FontWeight.normal),
           fontSize: ((style?.fontSize ?? baseFontSize) *
-              accessibilitySettings.textScaleFactor *
+              (accessibilitySettings.textScaleFactor / 100) *
               (accessibilitySettings.impairedMode ? 1.2 : 1)),
           color: finalColor,
           height: accessibilitySettings.lineHeight,
