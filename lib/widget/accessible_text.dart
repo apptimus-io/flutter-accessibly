@@ -43,22 +43,18 @@ class AccessiblyText extends StatelessWidget {
   Widget build(BuildContext context) {
     final accessibilitySettings = context.watch<Accessibly>();
 
-    // final TextStyle textStyle = style ?? const TextStyle();
-    final Color? textColor = style?.color;
-    final Color? fallbackColor =
-        accessibilitySettings.stringToColor(accessibilitySettings.textColor);
+    TextStyle? textstyle = (style ?? const TextStyle());
 
-    final bool isBlackOrWhite =
-        textColor == Colors.black || textColor == Colors.white;
+    if (accessibilitySettings.textBgColor != null) {
+      textstyle = textstyle.copyWith(color: accessibilitySettings.textBgColor);
+    }
 
-    final Color? finalColor =
-        isBlackOrWhite ? fallbackColor : textColor ?? fallbackColor;
+    if (accessibilitySettings.textColor != null) {
+      final Color? fallbackColor =
+          accessibilitySettings.stringToColor(accessibilitySettings.textColor);
 
-    TextStyle? textstyle = (style ?? const TextStyle()).copyWith(
-      backgroundColor:
-          style?.backgroundColor ?? accessibilitySettings.textBgColor,
-      color: finalColor,
-    );
+      textstyle = textstyle.copyWith(color: fallbackColor);
+    }
 
     if (accessibilitySettings.textScaleFactor != 100) {
       textstyle = textstyle.copyWith(

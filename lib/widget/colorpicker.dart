@@ -12,7 +12,7 @@ class TextColorPicker extends StatefulWidget {
       required this.title});
 
   @override
-  _TextColorPickerState createState() => _TextColorPickerState();
+  State<TextColorPicker> createState() => _TextColorPickerState();
 }
 
 class _TextColorPickerState extends State<TextColorPicker> {
