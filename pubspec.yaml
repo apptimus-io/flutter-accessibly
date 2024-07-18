@@ -1,6 +1,6 @@
 name: accessibly
 description: "This is a flutter project which is used to change the accessibility features of the device."
-version: 1.3.0
+version: 1.4.1
 homepage: "https://github.com/apptimus/flutter-accessibly.git"
 
 environment:

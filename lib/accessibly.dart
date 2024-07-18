@@ -195,6 +195,7 @@ class Accessibly extends ChangeNotifier {
 
   // Method to set heading color
   void setHeadingColor(Color color) {
+    _headingColor = color;
     storage!.setString("headingColor", colorToString(color)!);
     notifyListeners();
   }
@@ -207,6 +208,7 @@ class Accessibly extends ChangeNotifier {
 
   // Method to set text color
   void setTextColor(Color color) {
+    _textColor = color;
     storage!.setString("textColor", colorToString(color)!);
     notifyListeners();
   }
