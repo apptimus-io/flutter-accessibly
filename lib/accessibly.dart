@@ -13,8 +13,8 @@ class Accessibly extends ChangeNotifier {
   bool _cognitiveMode = false;
   bool _adhd = false;
   int _textScaleFactor = 100;
-  String? _headingColor; // Default heading color as string
-  String? _textColor; // Default text color
+  Color? _headingColor; // Default heading color as string
+  Color? _textColor; // Default text color
   Color? _textBgColor; // Default text background color
   Color _scaldBgColor = Colors.white; // Default scaffold background color
   int _lineHeight = 0; // Default line height
@@ -25,9 +25,6 @@ class Accessibly extends ChangeNotifier {
   bool _monochrome = false;
   bool _systemMode = false;
   bool _isDark = false;
-  String? _originalTextColor;
-  String? _originalHeadingColor;
-  String? _originalImageColor;
   SharedPreferences? storage;
 
   // Getter methods for accessing properties
@@ -38,8 +35,8 @@ class Accessibly extends ChangeNotifier {
   bool get cognitiveMode => _cognitiveMode;
   bool get monochrome => _monochrome;
   int get textScaleFactor => _textScaleFactor;
-  String? get headingColor => _headingColor;
-  String? get textColor => _textColor;
+  Color? get headingColor => _headingColor;
+  Color? get textColor => _textColor;
   Color? get textBgColor => _textBgColor;
   Color get scaldBgColor => _scaldBgColor;
   int get lineHeight => _lineHeight;
@@ -49,16 +46,12 @@ class Accessibly extends ChangeNotifier {
   TextAlign get textAlignment => _textAlignment;
   bool get systemMode => _systemMode;
   bool get isDark => _isDark;
-  String? get originalTextColor => _originalTextColor;
-  String? get originalHeadingColor => _originalHeadingColor;
-  String? get orginalImageColor => _originalImageColor;
 
   // Constructor to initialize the theme
   Accessibly() {
     // _currentTheme = AppTheme.light;
     // _colorBlindMode = false;
     _textScaleFactor = 100;
-    _originalImageColor = Colors.white.value.toString();
   }
 
   final darkTheme = ThemeData(
@@ -93,8 +86,9 @@ class Accessibly extends ChangeNotifier {
     _isDark = storage?.getBool("isDark") ?? false;
     _systemMode = storage?.getBool("isSystem") ?? false;
     _imageVisibility = storage?.getBool("imageVisibility") ?? true;
-    _headingColor = storage?.getString("headingColor");
-    _textColor = storage?.getString("textColor");
+    _headingColor = stringToColor(storage?.getString("headingColor"));
+    _textColor = stringToColor(storage?.getString("textColor"));
+    _textBgColor = stringToColor(storage?.getString("textBgColor"));
     _impairedMode = storage?.getBool("impairedMode") ?? false;
     _adhd = storage?.getBool("adhd") ?? false;
     _cognitiveMode = storage?.getBool("cognitiveMode") ?? false;
@@ -102,18 +96,6 @@ class Accessibly extends ChangeNotifier {
     _lineHeight = storage!.getInt("lineHeight") ?? 0;
     _monochrome = storage?.getBool("monochrome") ?? false;
     _textScaleFactor = storage?.getInt("textScaleFactor") ?? 100;
-    // final db = await AccessiblyDatasource.getDB();
-    // final settings = await AccessiblyDatasource.getAllAccessibly();
-    // if (settings != null && settings.isNotEmpty) {
-    //   final accessibilityModel = settings.first;
-    //   _currentFontSize = accessibilityModel.currentFontSize ?? 16.0;
-    //   _colorBlindMode = accessibilityModel.colorBlindMode ?? false;
-    //   _textScaleFactor = accessibilityModel.textScaleFactor ?? 1.0;
-    //   // _monochrome = accessibilityModel.monochrome ?? MonochromeMode.off;
-    //   _originalTextColor = accessibilityModel.originalTextColor;
-    //   _originalHeadingColor = accessibilityModel.originalHeadingColor;
-    //   _originalImageColor = accessibilityModel.originalImageColor;
-    // }
 
     notifyListeners();
   }
@@ -141,7 +123,6 @@ class Accessibly extends ChangeNotifier {
   void increaseFontSize() {
     if (_textScaleFactor <= 160) {
       _textScaleFactor += 20;
-      print(_textScaleFactor);
       updateTextScaleFactor();
     }
   }
@@ -150,7 +131,6 @@ class Accessibly extends ChangeNotifier {
   void decreaseFontSize() {
     if (_textScaleFactor >= 60) {
       _textScaleFactor -= 20;
-      print(_textScaleFactor);
       updateTextScaleFactor();
     }
   }
@@ -177,42 +157,7 @@ class Accessibly extends ChangeNotifier {
 
   void toggleMonochrome() {
     _monochrome = !_monochrome;
-
-    if (_monochrome) {
-      // Store original colors before switching to monochrome mode
-      _originalTextColor = _textColor;
-      _originalHeadingColor = _headingColor;
-      _originalImageColor = colorToString(_imageColor);
-
-      // Set colors to grey when monochrome mode is on
-      _textColor = _isDark
-          ? Colors.white.value.toString()
-          : Colors.grey.value.toString();
-      _headingColor = _isDark
-          ? Colors.white.value.toString()
-          : Colors.black.value.toString();
-      _imageColor = Colors.grey;
-      if (_headingColor != null) {
-        storage!.setString("headingColor", _headingColor!);
-      }
-      if (_textColor != null) {
-        storage!.setString("textColor", _textColor!);
-      }
-    } else {
-      // Restore original colors when turning off monochrome mode
-      _textColor = _originalTextColor;
-      _headingColor = _originalHeadingColor;
-      _imageColor = stringToColor(_originalImageColor);
-      if (_headingColor != null) {
-        storage!.setString("headingColor", _headingColor!);
-      }
-      if (_textColor != null) {
-        storage!.setString("textColor", _textColor!);
-      }
-    }
-
     storage?.setBool("monochrome", _monochrome);
-
     notifyListeners();
   }
 
@@ -250,13 +195,7 @@ class Accessibly extends ChangeNotifier {
 
   // Method to set heading color
   void setHeadingColor(Color color) {
-    _headingColor = color.value.toString(); // Convert Color to string
-    if (_headingColor != null) {
-      storage!.setString("headingColor", _headingColor!);
-    } else {
-      // Handle the case where _headingColor or storage is null
-      // For example, you could assign a default value or handle the error
-    }
+    storage!.setString("headingColor", colorToString(color)!);
     notifyListeners();
   }
 
@@ -268,13 +207,7 @@ class Accessibly extends ChangeNotifier {
 
   // Method to set text color
   void setTextColor(Color color) {
-    _textColor = color.value.toString(); // Convert Color to string
-    if (_textColor != null) {
-      storage!.setString("textColor", _textColor!);
-    } else {
-      // Handle the case where _headingColor or storage is null
-      // For example, you could assign a default value or handle the error
-    }
+    storage!.setString("textColor", colorToString(color)!);
     notifyListeners();
   }
 
@@ -351,8 +284,8 @@ class Accessibly extends ChangeNotifier {
     storage?.setBool("isDark", _isDark);
     storage?.setBool("isSystem", _systemMode);
     storage?.setBool("imageVisibility", _imageVisibility);
-    storage?.setString("headingColor", _headingColor ?? "");
-    storage?.setString("textColor", _textColor ?? "");
+    storage?.setString("headingColor", colorToString(_headingColor) ?? "");
+    storage?.setString("textColor", colorToString(_textColor) ?? "");
     storage?.setInt("lineHeight", _lineHeight);
     storage!.setInt("letterSpacing", _letterSpacing);
     storage!.setInt("textScaleFactor", _textScaleFactor);

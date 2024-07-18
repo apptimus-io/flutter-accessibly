@@ -44,8 +44,7 @@ class AccessiblyHeadingText extends StatelessWidget {
     }
 
     if (accessibilitySettings.headingColor != null) {
-      final Color? fallbackColor = accessibilitySettings
-          .stringToColor(accessibilitySettings.headingColor);
+      final Color? fallbackColor = accessibilitySettings.headingColor;
 
       textstyle = textstyle.copyWith(color: fallbackColor);
     }
@@ -68,8 +67,8 @@ class AccessiblyHeadingText extends StatelessWidget {
     }
 
     if (accessibilitySettings.monochrome) {
-      final Color? monochromeColor = accessibilitySettings
-          .stringToColor(accessibilitySettings.headingColor);
+      final Color monochromeColor =
+          accessibilitySettings.isDark ? Colors.white : Colors.grey;
 
       textstyle =
           textstyle.copyWith(color: monochromeColor, backgroundColor: null);

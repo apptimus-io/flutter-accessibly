@@ -23,9 +23,6 @@ class FontStyleWidget extends StatefulWidget {
 class _FontStyleWidgetState extends State<FontStyleWidget> {
   @override
   Widget build(BuildContext context) {
-    print('-----------------');
-    print('${widget.title}');
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
