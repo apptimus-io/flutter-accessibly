@@ -9,7 +9,10 @@ class AccessiblyModel {
   bool impairedMode;
   double textScaleFactor;
   String? headingColor;
+  String? subHeadingColor;
   String? textColor;
+  String? primaryColor;
+  String? errorTextColor;
   Color textBgColor;
   Color scaldBgColor;
   double lineHeight;
@@ -31,7 +34,10 @@ class AccessiblyModel {
     required this.impairedMode,
     required this.textScaleFactor,
     required this.headingColor,
+    required this.subHeadingColor,
     required this.textColor,
+    required this.primaryColor,
+    required this.errorTextColor,
     required this.textBgColor,
     required this.scaldBgColor,
     required this.lineHeight,
@@ -55,7 +61,10 @@ class AccessiblyModel {
       impairedMode: json['impairedMode'],
       textScaleFactor: json['textScaleFactor'],
       headingColor: json['headingColor'],
+      subHeadingColor: json['subHeadingColor'],
       textColor: json['textColor'],
+      primaryColor: json['primaryColor'],
+      errorTextColor: json['errorTextColor'],
       textBgColor: json['textBgColor'] ?? Colors.transparent,
       scaldBgColor: json['scaldBgColor'] ?? Colors.white,
       lineHeight: json['lineHeight'] ?? 1.0,
@@ -79,7 +88,10 @@ class AccessiblyModel {
       'impairedMode': impairedMode,
       'textScaleFactor': textScaleFactor,
       'headingColor': headingColor,
+      'subHeadingColor': subHeadingColor,
       'textColor': textColor,
+      'primaryColor': primaryColor,
+      'errorTextColor': errorTextColor,
       'textBgColor': textBgColor,
       'scaldBgColor': scaldBgColor,
       'lineHeight': lineHeight,

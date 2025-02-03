@@ -14,7 +14,10 @@ class Accessibly extends ChangeNotifier {
   bool _adhd = false;
   int _textScaleFactor = 100;
   Color? _headingColor; // Default heading color as string
+  Color? _subHeadingColor;
   Color? _textColor; // Default text color
+  Color? _primaryColor;
+  Color? _errorTextColor;
   Color? _textBgColor; // Default text background color
   Color _scaldBgColor = Colors.white; // Default scaffold background color
   int _lineHeight = 0; // Default line height
@@ -36,8 +39,11 @@ class Accessibly extends ChangeNotifier {
   bool get monochrome => _monochrome;
   int get textScaleFactor => _textScaleFactor;
   Color? get headingColor => _headingColor;
+  Color? get subHeadingColor => _subHeadingColor;
   Color? get textColor => _textColor;
+  Color? get primaryColor => _primaryColor;
   Color? get textBgColor => _textBgColor;
+  Color? get errorTextColor => _errorTextColor;
   Color get scaldBgColor => _scaldBgColor;
   int get lineHeight => _lineHeight;
   int get letterSpacing => _letterSpacing;
@@ -87,7 +93,10 @@ class Accessibly extends ChangeNotifier {
     _systemMode = storage?.getBool("isSystem") ?? false;
     _imageVisibility = storage?.getBool("imageVisibility") ?? true;
     _headingColor = stringToColor(storage?.getString("headingColor"));
+    _subHeadingColor = stringToColor(storage?.getString("subHeadingColor"));
     _textColor = stringToColor(storage?.getString("textColor"));
+    _primaryColor = stringToColor(storage?.getString("primaryColor"));
+    _errorTextColor = stringToColor(storage?.getString("errorTextColor"));
     _textBgColor = stringToColor(storage?.getString("textBgColor"));
     _impairedMode = storage?.getBool("impairedMode") ?? false;
     _adhd = storage?.getBool("adhd") ?? false;
@@ -200,6 +209,12 @@ class Accessibly extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setSubHeadingColor(Color color) {
+    _subHeadingColor = color;
+    storage!.setString("subHeadingColor", colorToString(color)!);
+    notifyListeners();
+  }
+
   // Method to set text color
   void setTextAlignment(TextAlign align) {
     _textAlignment = align;
@@ -210,6 +225,18 @@ class Accessibly extends ChangeNotifier {
   void setTextColor(Color color) {
     _textColor = color;
     storage!.setString("textColor", colorToString(color)!);
+    notifyListeners();
+  }
+
+  void setPrimaryColor(Color color) {
+    _primaryColor = color;
+    storage!.setString("primaryColor", colorToString(color)!);
+    notifyListeners();
+  }
+
+  void setErrorTextColor(Color color) {
+    _errorTextColor = color;
+    storage!.setString("errorTextColor", colorToString(color)!);
     notifyListeners();
   }
 
@@ -279,7 +306,10 @@ class Accessibly extends ChangeNotifier {
     _isDark = false;
     _systemMode = false;
     _headingColor = null;
+    _subHeadingColor = null;
     _textColor = null;
+    _primaryColor = null;
+    _errorTextColor = null;
     storage!.setBool("impairedMode", _impairedMode);
     storage!.setBool("adhd", _adhd);
     storage!.setBool("cognitiveMode", _cognitiveMode);
@@ -287,7 +317,11 @@ class Accessibly extends ChangeNotifier {
     storage?.setBool("isSystem", _systemMode);
     storage?.setBool("imageVisibility", _imageVisibility);
     storage?.setString("headingColor", colorToString(_headingColor) ?? "");
+    storage?.setString(
+        "subHeadingColor", colorToString(_subHeadingColor) ?? "");
     storage?.setString("textColor", colorToString(_textColor) ?? "");
+    storage?.setString("primaryColor", colorToString(_primaryColor) ?? "");
+    storage?.setString("errorTextColor", colorToString(_errorTextColor) ?? "");
     storage?.setInt("lineHeight", _lineHeight);
     storage!.setInt("letterSpacing", _letterSpacing);
     storage!.setInt("textScaleFactor", _textScaleFactor);
