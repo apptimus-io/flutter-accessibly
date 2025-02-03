@@ -1,26 +1,55 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum AppTheme { light, dark, highContrast }
 
-// enum MonochromeMode { off, on }
-
 class Accessibly extends ChangeNotifier {
-  // AppTheme _currentTheme = AppTheme.light;
+  // Constants for SharedPreferences keys
+  static const String _isDarkKey = "isDark";
+  static const String _isSystemKey = "isSystem";
+  static const String _imageVisibilityKey = "imageVisibility";
+  static const String _headingColorKey = "headingColor";
+  static const String _subHeadingColorKey = "subHeadingColor";
+  static const String _textColorKey = "textColor";
+  static const String _subTextColorKey = "subTextColor";
+  static const String _primaryColorKey = "primaryColor";
+  static const String _errorTextColorKey = "errorTextColor";
+  static const String _errorBackgroundColorKey = "errorBackgroundColor";
+  static const String _errorIconColorKey = "errorIconColor";
+  static const String _textBgColorKey = "textBgColor";
+  static const String _iconColorKey = "iconColor";
+  static const String _background1ColorKey = "background1Color";
+  static const String _background2ColorKey = "background2Color";
+  static const String _background3ColorKey = "background3Color";
+  static const String _impairedModeKey = "impairedMode";
+  static const String _adhdKey = "adhd";
+  static const String _cognitiveModeKey = "cognitiveMode";
+  static const String _letterSpacingKey = "letterSpacing";
+  static const String _lineHeightKey = "lineHeight";
+  static const String _monochromeKey = "monochrome";
+  static const String _textScaleFactorKey = "textScaleFactor";
+
+  // Properties
   bool _colorBlindMode = false;
   bool _impairedMode = false;
   bool _cognitiveMode = false;
   bool _adhd = false;
   int _textScaleFactor = 100;
-  Color? _headingColor; // Default heading color as string
+  Color? _headingColor;
   Color? _subHeadingColor;
-  Color? _textColor; // Default text color
+  Color? _textColor;
+  Color? _subTextColor;
   Color? _primaryColor;
   Color? _errorTextColor;
-  Color? _textBgColor; // Default text background color
-  Color _scaldBgColor = Colors.white; // Default scaffold background color
-  int _lineHeight = 0; // Default line height
+  Color? _errorBackgroundColor;
+  Color? _errorIconColor;
+  Color? _textBgColor;
+  Color? _iconColor;
+  Color? _background1Color;
+  Color? _background2Color;
+  Color? _background3Color;
+  Color _scaldBgColor = Colors.white;
+  int _lineHeight = 0;
   int _letterSpacing = 100;
   Color? _imageColor = Colors.white;
   bool _imageVisibility = true;
@@ -28,10 +57,9 @@ class Accessibly extends ChangeNotifier {
   bool _monochrome = false;
   bool _systemMode = false;
   bool _isDark = false;
-  SharedPreferences? storage;
+  SharedPreferences? _storage;
 
-  // Getter methods for accessing properties
-  // AppTheme get currentTheme => _currentTheme;
+  // Getters
   bool get colorBlindMode => _colorBlindMode;
   bool get impairedMode => _impairedMode;
   bool get adhd => _adhd;
@@ -41,9 +69,16 @@ class Accessibly extends ChangeNotifier {
   Color? get headingColor => _headingColor;
   Color? get subHeadingColor => _subHeadingColor;
   Color? get textColor => _textColor;
+  Color? get subTextColor => _subTextColor;
   Color? get primaryColor => _primaryColor;
-  Color? get textBgColor => _textBgColor;
   Color? get errorTextColor => _errorTextColor;
+  Color? get errorBackgroundColor => _errorBackgroundColor;
+  Color? get errorIconColor => _errorIconColor;
+  Color? get textBgColor => _textBgColor;
+  Color? get iconColor => _iconColor;
+  Color? get background1Color => _background1Color;
+  Color? get background2Color => _background2Color;
+  Color? get background3Color => _background3Color;
   Color get scaldBgColor => _scaldBgColor;
   int get lineHeight => _lineHeight;
   int get letterSpacing => _letterSpacing;
@@ -53,14 +88,8 @@ class Accessibly extends ChangeNotifier {
   bool get systemMode => _systemMode;
   bool get isDark => _isDark;
 
-  // Constructor to initialize the theme
-  Accessibly() {
-    // _currentTheme = AppTheme.light;
-    // _colorBlindMode = false;
-    _textScaleFactor = 100;
-  }
-
-  final darkTheme = ThemeData(
+  // Theme Data
+  final ThemeData darkTheme = ThemeData(
     primaryColor: Colors.black,
     brightness: Brightness.dark,
     primaryColorDark: Colors.black,
@@ -69,7 +98,7 @@ class Accessibly extends ChangeNotifier {
     ),
   );
 
-  final lightTheme = ThemeData(
+  final ThemeData lightTheme = ThemeData(
     primaryColor: Colors.white,
     brightness: Brightness.light,
     primaryColorDark: Colors.white,
@@ -78,218 +107,262 @@ class Accessibly extends ChangeNotifier {
     ),
   );
 
-  changeTheme() {
-    _isDark = !isDark;
-    storage?.setBool("isDark", _isDark);
+  // Initialize the provider
+  Future<void> init() async {
+    _storage = await SharedPreferences.getInstance();
+    _isDark = _storage?.getBool(_isDarkKey) ?? false;
+    _systemMode = _storage?.getBool(_isSystemKey) ?? false;
+    _imageVisibility = _storage?.getBool(_imageVisibilityKey) ?? true;
+    _headingColor = _stringToColor(_storage?.getString(_headingColorKey));
+    _subHeadingColor = _stringToColor(_storage?.getString(_subHeadingColorKey));
+    _textColor = _stringToColor(_storage?.getString(_textColorKey));
+    _subTextColor = _stringToColor(_storage?.getString(_subTextColorKey));
+    _primaryColor = _stringToColor(_storage?.getString(_primaryColorKey));
+    _errorTextColor = _stringToColor(_storage?.getString(_errorTextColorKey));
+    _errorBackgroundColor =
+        _stringToColor(_storage?.getString(_errorBackgroundColorKey));
+    _errorIconColor = _stringToColor(_storage?.getString(_errorIconColorKey));
+    _textBgColor = _stringToColor(_storage?.getString(_textBgColorKey));
+    _iconColor = _stringToColor(_storage?.getString(_iconColorKey));
+    _background1Color =
+        _stringToColor(_storage?.getString(_background1ColorKey));
+    _background2Color =
+        _stringToColor(_storage?.getString(_background2ColorKey));
+    _background3Color =
+        _stringToColor(_storage?.getString(_background3ColorKey));
+    _impairedMode = _storage?.getBool(_impairedModeKey) ?? false;
+    _adhd = _storage?.getBool(_adhdKey) ?? false;
+    _cognitiveMode = _storage?.getBool(_cognitiveModeKey) ?? false;
+    _letterSpacing = _storage?.getInt(_letterSpacingKey) ?? 100;
+    _lineHeight = _storage?.getInt(_lineHeightKey) ?? 0;
+    _monochrome = _storage?.getBool(_monochromeKey) ?? false;
+    _textScaleFactor = _storage?.getInt(_textScaleFactorKey) ?? 100;
+
+    notifyListeners();
+  }
+
+  // Helper method to convert string to Color
+  Color? _stringToColor(String? colorString) {
+    if (colorString == null || colorString.isEmpty) return null;
+    return Color(int.parse(colorString));
+  }
+
+  // Helper method to convert Color to string
+  String? _colorToString(Color? color) {
+    if (color == null) return null;
+    return color.value.toString();
+  }
+
+  // Toggle dark/light theme
+  void changeTheme() {
+    _isDark = !_isDark;
+    _storage?.setBool(_isDarkKey, _isDark);
     _imageColor = Colors.white;
     notifyListeners();
   }
 
-  //Init method of provider
-  init() async {
-    // After we re run the appS
-    storage = await SharedPreferences.getInstance();
-    _isDark = storage?.getBool("isDark") ?? false;
-    _systemMode = storage?.getBool("isSystem") ?? false;
-    _imageVisibility = storage?.getBool("imageVisibility") ?? true;
-    _headingColor = stringToColor(storage?.getString("headingColor"));
-    _subHeadingColor = stringToColor(storage?.getString("subHeadingColor"));
-    _textColor = stringToColor(storage?.getString("textColor"));
-    _primaryColor = stringToColor(storage?.getString("primaryColor"));
-    _errorTextColor = stringToColor(storage?.getString("errorTextColor"));
-    _textBgColor = stringToColor(storage?.getString("textBgColor"));
-    _impairedMode = storage?.getBool("impairedMode") ?? false;
-    _adhd = storage?.getBool("adhd") ?? false;
-    _cognitiveMode = storage?.getBool("cognitiveMode") ?? false;
-    _letterSpacing = storage!.getInt("letterSpacing") ?? 100;
-    _lineHeight = storage!.getInt("lineHeight") ?? 0;
-    _monochrome = storage?.getBool("monochrome") ?? false;
-    _textScaleFactor = storage?.getInt("textScaleFactor") ?? 100;
-
+  // Toggle impaired mode
+  void toggleImpairedMode() {
+    _impairedMode = !_impairedMode;
+    _storage?.setBool(_impairedModeKey, _impairedMode);
     notifyListeners();
   }
 
-  Color? stringToColor(String? colorString) {
-    if (colorString == null || colorString.isEmpty) {
-      return null;
-    }
-    return Color(int.parse(colorString));
+  // Toggle cognitive mode
+  void toggleCognitiveMode() {
+    _cognitiveMode = !_cognitiveMode;
+    _storage?.setBool(_cognitiveModeKey, _cognitiveMode);
+    notifyListeners();
   }
 
-  String? colorToString(Color? color) {
-    if (color == null) {
-      return null;
-    }
-    return color.value.toString();
+  // Toggle ADHD mode
+  void toggleADHDMode() {
+    _adhd = !_adhd;
+    _storage?.setBool(_adhdKey, _adhd);
+    notifyListeners();
   }
 
-  ThemeData lightMode = ThemeData(
-    brightness: Brightness.light,
-  );
-  ThemeData darkMode = ThemeData(brightness: Brightness.dark);
+  // Toggle monochrome mode
+  void toggleMonochrome() {
+    _monochrome = !_monochrome;
+    _storage?.setBool(_monochromeKey, _monochrome);
+    notifyListeners();
+  }
 
-  // Method to increase font size
+  // Toggle system mode
+  void toggleSystem() {
+    _systemMode = !_systemMode;
+    _storage?.setBool(_isSystemKey, _systemMode);
+    notifyListeners();
+  }
+
+  // Adjust text size
+  void adjustTextSize(int newTextScaleFactor) {
+    _textScaleFactor = newTextScaleFactor;
+    _storage?.setInt(_textScaleFactorKey, _textScaleFactor);
+    notifyListeners();
+  }
+
+  // Increase font size
   void increaseFontSize() {
     if (_textScaleFactor <= 160) {
       _textScaleFactor += 20;
-      updateTextScaleFactor();
+      _storage?.setInt(_textScaleFactorKey, _textScaleFactor);
+      notifyListeners();
     }
   }
 
-  // Method to decrease font size
+  // Decrease font size
   void decreaseFontSize() {
     if (_textScaleFactor >= 60) {
       _textScaleFactor -= 20;
-      updateTextScaleFactor();
+      _storage?.setInt(_textScaleFactorKey, _textScaleFactor);
+      notifyListeners();
     }
   }
 
-  // Method to toggle impaired mode
-  void toggleimpairedMode() {
-    _impairedMode = !_impairedMode;
-    storage!.setBool("impairedMode", _impairedMode);
-    notifyListeners(); // Notify listeners to update UI
-  }
-
-  void togglecognitiveModeMode() {
-    _cognitiveMode = !_cognitiveMode;
-    storage!.setBool("cognitiveMode", _cognitiveMode);
-    notifyListeners(); // Notify listeners to update UI
-  }
-
-  // Method to toggle impaired mode
-  void toggleADHDMode() {
-    _adhd = !_adhd;
-    storage!.setBool("adhd", _adhd);
-    notifyListeners(); // Notify listeners to update UI
-  }
-
-  void toggleMonochrome() {
-    _monochrome = !_monochrome;
-    storage?.setBool("monochrome", _monochrome);
-    notifyListeners();
-  }
-
-  void toggleSystem() {
-    _systemMode = !_systemMode; // Toggle system mode
-    if (_systemMode) {
-      // If system mode is on, adjust theme mode based on system brightness
-      // final Brightness brightness =
-      PlatformDispatcher.instance.platformBrightness;
-    }
-    storage?.setBool("isSystem", _systemMode);
-    notifyListeners();
-  }
-
-  // Method to adjust text size
-  void adjustTextSize(int newTextScaleFactor) {
-    _textScaleFactor = newTextScaleFactor;
-
-    notifyListeners(); // Notify listeners to update UI
-  }
-
-  // Method to update text scale factor
-  void updateTextScaleFactor() {
-    // Calculate text scale factor based on current font size
-    storage?.setInt("textScaleFactor", _textScaleFactor);
-    notifyListeners(); // Notify listeners to update UI
-  }
-
+  // Toggle image visibility
   void hideImage() {
-    // Calculate text scale factor based on current font size
-    _imageVisibility = !_imageVisibility; // Assuming 16.0 is the base font size
-    storage?.setBool("imageVisibility", _imageVisibility);
-    notifyListeners(); // Notify listeners to update UI
+    _imageVisibility = !_imageVisibility;
+    _storage?.setBool(_imageVisibilityKey, _imageVisibility);
+    notifyListeners();
   }
 
-  // Method to set heading color
+  // Set heading color
   void setHeadingColor(Color color) {
     _headingColor = color;
-    storage!.setString("headingColor", colorToString(color)!);
+    _storage?.setString(_headingColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
+  // Set subheading color
   void setSubHeadingColor(Color color) {
     _subHeadingColor = color;
-    storage!.setString("subHeadingColor", colorToString(color)!);
+    _storage?.setString(_subHeadingColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
-  // Method to set text color
-  void setTextAlignment(TextAlign align) {
-    _textAlignment = align;
-    notifyListeners();
-  }
-
-  // Method to set text color
+  // Set text color
   void setTextColor(Color color) {
     _textColor = color;
-    storage!.setString("textColor", colorToString(color)!);
+    _storage?.setString(_textColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
+  // Set subtext color
+  void setSubTextColor(Color color) {
+    _subTextColor = color;
+    _storage?.setString(_subTextColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set primary color
   void setPrimaryColor(Color color) {
     _primaryColor = color;
-    storage!.setString("primaryColor", colorToString(color)!);
+    _storage?.setString(_primaryColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
+  // Set error text color
   void setErrorTextColor(Color color) {
     _errorTextColor = color;
-    storage!.setString("errorTextColor", colorToString(color)!);
+    _storage?.setString(_errorTextColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
-  // Method to set text background color
+  // Set error background color
+  void setErrorBackgroundColor(Color color) {
+    _errorBackgroundColor = color;
+    _storage?.setString(_errorBackgroundColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set error icon color
+  void setErrorIconColor(Color color) {
+    _errorIconColor = color;
+    _storage?.setString(_errorIconColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set text background color
   void setTextBgColor(Color color) {
     _textBgColor = color;
-
+    _storage?.setString(_textBgColorKey, _colorToString(color)!);
     notifyListeners();
   }
 
-  // Method to set scaffold background color
-  void setScalfoldColor(Color color) {
+  // Set icon color
+  void setIconColor(Color color) {
+    _iconColor = color;
+    _storage?.setString(_iconColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set background 1 color
+  void setBackground1Color(Color color) {
+    _background1Color = color;
+    _storage?.setString(_background1ColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set background 2 color
+  void setBackground2Color(Color color) {
+    _background2Color = color;
+    _storage?.setString(_background2ColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set background 3 color
+  void setBackground3Color(Color color) {
+    _background3Color = color;
+    _storage?.setString(_background3ColorKey, _colorToString(color)!);
+    notifyListeners();
+  }
+
+  // Set scaffold background color
+  void setScaffoldColor(Color color) {
     _scaldBgColor = color;
     notifyListeners();
   }
 
-  void increaseLineHeight() async {
+  // Increase line height
+  void increaseLineHeight() {
     if (_lineHeight <= 80) {
       _lineHeight += 5;
-      storage?.setInt("lineHeight", _lineHeight);
-
+      _storage?.setInt(_lineHeightKey, _lineHeight);
       notifyListeners();
     }
   }
 
-  void decreaseLineHeight() async {
+  // Decrease line height
+  void decreaseLineHeight() {
     if (_lineHeight >= 5) {
       _lineHeight -= 5;
-      storage?.setInt("lineHeight", _lineHeight);
-
+      _storage?.setInt(_lineHeightKey, _lineHeight);
       notifyListeners();
     }
   }
 
+  // Increase letter spacing
   void increaseLetterSpace() {
     if (_letterSpacing <= 150) {
       _letterSpacing += 5;
-      storage!.setInt("letterSpacing", _letterSpacing);
+      _storage?.setInt(_letterSpacingKey, _letterSpacing);
       notifyListeners();
     }
   }
 
+  // Decrease letter spacing
   void decreaseLetterSpace() {
     if (_letterSpacing >= 90) {
       _letterSpacing -= 5;
-      storage!.setInt("letterSpacing", _letterSpacing);
+      _storage?.setInt(_letterSpacingKey, _letterSpacing);
       notifyListeners();
     }
   }
 
-  // Method to reset all settings
+  // Reset all settings
   void reset() {
-    // _currentTheme = AppTheme.light;
     _impairedMode = false;
     _adhd = false;
     _cognitiveMode = false;
@@ -308,24 +381,48 @@ class Accessibly extends ChangeNotifier {
     _headingColor = null;
     _subHeadingColor = null;
     _textColor = null;
+    _subTextColor = null;
     _primaryColor = null;
     _errorTextColor = null;
-    storage!.setBool("impairedMode", _impairedMode);
-    storage!.setBool("adhd", _adhd);
-    storage!.setBool("cognitiveMode", _cognitiveMode);
-    storage?.setBool("isDark", _isDark);
-    storage?.setBool("isSystem", _systemMode);
-    storage?.setBool("imageVisibility", _imageVisibility);
-    storage?.setString("headingColor", colorToString(_headingColor) ?? "");
-    storage?.setString(
-        "subHeadingColor", colorToString(_subHeadingColor) ?? "");
-    storage?.setString("textColor", colorToString(_textColor) ?? "");
-    storage?.setString("primaryColor", colorToString(_primaryColor) ?? "");
-    storage?.setString("errorTextColor", colorToString(_errorTextColor) ?? "");
-    storage?.setInt("lineHeight", _lineHeight);
-    storage!.setInt("letterSpacing", _letterSpacing);
-    storage!.setInt("textScaleFactor", _textScaleFactor);
-    storage?.setBool("monochrome", _monochrome);
+    _errorBackgroundColor = null;
+    _errorIconColor = null;
+    _iconColor = null;
+    _background1Color = null;
+    _background2Color = null;
+    _background3Color = null;
+
+    // Save reset values to SharedPreferences
+    _storage?.setBool(_impairedModeKey, _impairedMode);
+    _storage?.setBool(_adhdKey, _adhd);
+    _storage?.setBool(_cognitiveModeKey, _cognitiveMode);
+    _storage?.setBool(_isDarkKey, _isDark);
+    _storage?.setBool(_isSystemKey, _systemMode);
+    _storage?.setBool(_imageVisibilityKey, _imageVisibility);
+    _storage?.setString(_headingColorKey, _colorToString(_headingColor) ?? "");
+    _storage?.setString(
+        _subHeadingColorKey, _colorToString(_subHeadingColor) ?? "");
+    _storage?.setString(_textColorKey, _colorToString(_textColor) ?? "");
+    _storage?.setString(_subTextColorKey, _colorToString(_subTextColor) ?? "");
+    _storage?.setString(_primaryColorKey, _colorToString(_primaryColor) ?? "");
+    _storage?.setString(
+        _errorTextColorKey, _colorToString(_errorTextColor) ?? "");
+    _storage?.setString(
+        _errorBackgroundColorKey, _colorToString(_errorBackgroundColor) ?? "");
+    _storage?.setString(
+        _errorIconColorKey, _colorToString(_errorIconColor) ?? "");
+    _storage?.setString(_textBgColorKey, _colorToString(_textBgColor) ?? "");
+    _storage?.setString(_iconColorKey, _colorToString(_iconColor) ?? "");
+    _storage?.setString(
+        _background1ColorKey, _colorToString(_background1Color) ?? "");
+    _storage?.setString(
+        _background2ColorKey, _colorToString(_background2Color) ?? "");
+    _storage?.setString(
+        _background3ColorKey, _colorToString(_background3Color) ?? "");
+    _storage?.setInt(_lineHeightKey, _lineHeight);
+    _storage?.setInt(_letterSpacingKey, _letterSpacing);
+    _storage?.setInt(_textScaleFactorKey, _textScaleFactor);
+    _storage?.setBool(_monochromeKey, _monochrome);
+
     notifyListeners();
   }
 }
