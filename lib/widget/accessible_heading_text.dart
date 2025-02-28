@@ -43,7 +43,7 @@ class AccessiblyHeadingText extends StatelessWidget {
       textstyle = textstyle.copyWith(color: accessibilitySettings.textBgColor);
     }
 
-    if (accessibilitySettings.headingColor != null) {
+    if (accessibilitySettings.headingColor != null && style?.color == null) {
       final Color? fallbackColor = accessibilitySettings.headingColor;
 
       textstyle = textstyle.copyWith(color: fallbackColor);

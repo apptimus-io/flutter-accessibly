@@ -50,7 +50,7 @@ class AccessiblyText extends StatelessWidget {
           backgroundColor: accessibilitySettings.textBgColor);
     }
 
-    if (accessibilitySettings.textColor != null) {
+    if (accessibilitySettings.textColor != null && style?.color == null) {
       final Color? fallbackColor = accessibilitySettings.textColor;
 
       textstyle = textstyle.copyWith(color: fallbackColor);
