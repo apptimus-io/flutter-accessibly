@@ -25,7 +25,7 @@ class Accessibly extends ChangeNotifier {
   Color? _errorTextColor;
   Color? _textBgColor; // Default text background color
   Color _scaldBgColor = Colors.white; // Default scaffold background color
-  int _lineHeight = 0; // Default line height
+  double _lineHeight = 0; // Default line height
   int _letterSpacing = 100;
   Color? _imageColor = Colors.white;
   bool _imageVisibility = true;
@@ -50,7 +50,7 @@ class Accessibly extends ChangeNotifier {
   Color? get textBgColor => _textBgColor;
   Color? get errorTextColor => _errorTextColor;
   Color get scaldBgColor => _scaldBgColor;
-  int get lineHeight => _lineHeight;
+  double get lineHeight => _lineHeight;
   int get letterSpacing => _letterSpacing;
   Color? get imageColor => _imageColor;
   bool get imageVisibility => _imageVisibility;
@@ -107,7 +107,7 @@ class Accessibly extends ChangeNotifier {
     _adhd = storage?.getBool("adhd") ?? false;
     _cognitiveMode = storage?.getBool("cognitiveMode") ?? false;
     _letterSpacing = storage!.getInt("letterSpacing") ?? 100;
-    _lineHeight = storage!.getInt("lineHeight") ?? 0;
+    _lineHeight = storage!.getDouble("lineHeight") ?? 0.0;
     _monochrome = storage?.getBool("monochrome") ?? false;
     _textScaleFactor = storage?.getInt("textScaleFactor") ?? 100;
 
@@ -150,6 +150,16 @@ class Accessibly extends ChangeNotifier {
       _textScaleFactor = 100;
     }
     updateTextScaleFactor();
+  }
+
+  // Getter for Text Size
+  FontSize get fontSizeMode {
+    if (_textScaleFactor == 80) {
+      return FontSize.small;
+    } else if (_textScaleFactor == 120) {
+      return FontSize.large;
+    }
+    return FontSize.medium; // Default
   }
 
   // Method to decrease font size
@@ -272,7 +282,7 @@ class Accessibly extends ChangeNotifier {
   void increaseLineHeight() async {
     if (_lineHeight <= 80) {
       _lineHeight += 5;
-      storage?.setInt("lineHeight", _lineHeight);
+      storage?.setDouble("lineHeight", _lineHeight);
 
       notifyListeners();
     }
@@ -281,7 +291,7 @@ class Accessibly extends ChangeNotifier {
   void decreaseLineHeight() async {
     if (_lineHeight >= 5) {
       _lineHeight -= 5;
-      storage?.setInt("lineHeight", _lineHeight);
+      storage?.setDouble("lineHeight", _lineHeight);
 
       notifyListeners();
     }
@@ -289,13 +299,24 @@ class Accessibly extends ChangeNotifier {
 
   void changeLineHeight(LineHeight size) {
     if (size == LineHeight.compact) {
-      _lineHeight = 40;
+      _lineHeight = 12;
     } else if (size == LineHeight.normal) {
       _lineHeight = 0;
     } else if (size == LineHeight.spacious) {
-      _lineHeight = 10;
+      _lineHeight = 16;
     }
+    storage?.setDouble("lineHeight", _lineHeight);
     notifyListeners();
+  }
+
+  // Getter for Line Height
+  LineHeight get lineHeightMode {
+    if (_lineHeight == 12) {
+      return LineHeight.compact;
+    } else if (_lineHeight == 16) {
+      return LineHeight.spacious;
+    }
+    return LineHeight.normal; // Default
   }
 
   void increaseLetterSpace() {
@@ -322,7 +343,19 @@ class Accessibly extends ChangeNotifier {
     } else if (size == LetterSpace.spacious) {
       _letterSpacing = 95;
     }
+    storage!.setInt("letterSpacing", _letterSpacing);
     notifyListeners();
+  }
+
+  LetterSpace get letterSpacingMode {
+    if (_letterSpacing == 110) {
+      return LetterSpace.compact;
+    } else if (_letterSpacing == 100) {
+      return LetterSpace.normal;
+    } else if (_letterSpacing == 95) {
+      return LetterSpace.spacious;
+    }
+    return LetterSpace.normal; // Default to normal
   }
 
   // Method to reset all settings
@@ -337,7 +370,7 @@ class Accessibly extends ChangeNotifier {
     _textBgColor = null;
     _scaldBgColor = Colors.white;
     _imageColor = Colors.white;
-    _lineHeight = 0;
+    _lineHeight = 0.0;
     _letterSpacing = 100;
     _imageVisibility = true;
     _textAlignment = TextAlign.left;
@@ -360,7 +393,7 @@ class Accessibly extends ChangeNotifier {
     storage?.setString("textColor", colorToString(_textColor) ?? "");
     storage?.setString("primaryColor", colorToString(_primaryColor) ?? "");
     storage?.setString("errorTextColor", colorToString(_errorTextColor) ?? "");
-    storage?.setInt("lineHeight", _lineHeight);
+    storage?.setDouble("lineHeight", _lineHeight);
     storage!.setInt("letterSpacing", _letterSpacing);
     storage!.setInt("textScaleFactor", _textScaleFactor);
     storage?.setBool("monochrome", _monochrome);

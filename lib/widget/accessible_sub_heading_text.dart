@@ -82,6 +82,7 @@ class AccessiblySubHeadingText extends StatelessWidget {
     if (accessibilitySettings.lineHeight > 0) {
       textstyle = textstyle.copyWith(
         height: (accessibilitySettings.lineHeight) / 10,
+        leadingDistribution: TextLeadingDistribution.even,
       );
     }
 

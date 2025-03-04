@@ -90,12 +90,13 @@ class AccessiblyText extends StatelessWidget {
     if (accessibilitySettings.lineHeight > 0) {
       textstyle = textstyle.copyWith(
         height: (accessibilitySettings.lineHeight) / 10,
+        leadingDistribution: TextLeadingDistribution.even,
       );
     }
 
     return Text(
       data,
-      textAlign: accessibilitySettings.textAlignment,
+      textAlign: textAlign ?? accessibilitySettings.textAlignment,
       style: textstyle,
       strutStyle: strutStyle,
       textDirection: textDirection,
