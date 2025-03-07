@@ -229,15 +229,15 @@ class Accessibly extends ChangeNotifier {
   }
 
   // Method to set heading color
-  void setHeadingColor(Color color) {
+  void setHeadingColor(Color? color) {
     _headingColor = color;
-    storage!.setString("headingColor", colorToString(color)!);
+    storage!.setString("headingColor", colorToString(color) ?? "");
     notifyListeners();
   }
 
-  void setSubHeadingColor(Color color) {
+  void setSubHeadingColor(Color? color) {
     _subHeadingColor = color;
-    storage!.setString("subHeadingColor", colorToString(color)!);
+    storage!.setString("subHeadingColor", colorToString(color) ?? "");
     notifyListeners();
   }
 
@@ -248,26 +248,26 @@ class Accessibly extends ChangeNotifier {
   }
 
   // Method to set text color
-  void setTextColor(Color color) {
+  void setTextColor(Color? color) {
     _textColor = color;
-    storage!.setString("textColor", colorToString(color)!);
+    storage!.setString("textColor", colorToString(color) ?? "");
     notifyListeners();
   }
 
-  void setPrimaryColor(Color color) {
+  void setPrimaryColor(Color? color) {
     _primaryColor = color;
-    storage!.setString("primaryColor", colorToString(color)!);
+    storage!.setString("primaryColor", colorToString(color) ?? "");
     notifyListeners();
   }
 
-  void setErrorTextColor(Color color) {
+  void setErrorTextColor(Color? color) {
     _errorTextColor = color;
-    storage!.setString("errorTextColor", colorToString(color)!);
+    storage!.setString("errorTextColor", colorToString(color) ?? "");
     notifyListeners();
   }
 
   // Method to set text background color
-  void setTextBgColor(Color color) {
+  void setTextBgColor(Color? color) {
     _textBgColor = color;
 
     notifyListeners();
