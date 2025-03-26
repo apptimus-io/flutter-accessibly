@@ -73,13 +73,13 @@ class AccessiblyErrorText extends StatelessWidget {
       );
     }
 
-    if (accessibilitySettings.monochrome) {
-      final Color monochromeColor =
-          accessibilitySettings.isDark ? Colors.white : Colors.grey;
+    // if (accessibilitySettings.monochrome) {
+    //   final Color monochromeColor =
+    //       accessibilitySettings.isDark ? Colors.white : Colors.grey;
 
-      textstyle =
-          textstyle.copyWith(color: monochromeColor, backgroundColor: null);
-    }
+    //   textstyle =
+    //       textstyle.copyWith(color: monochromeColor, backgroundColor: null);
+    // }
 
     if (accessibilitySettings.letterSpacing != 100) {
       textstyle = textstyle.copyWith(
