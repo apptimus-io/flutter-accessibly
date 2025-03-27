@@ -374,7 +374,7 @@ class Accessibly extends ChangeNotifier {
     _letterSpacing = 100;
     _imageVisibility = true;
     _textAlignment = TextAlign.left;
-    _isDark = false;
+    _isDark = true;
     _systemMode = false;
     _headingColor = null;
     _subHeadingColor = null;
