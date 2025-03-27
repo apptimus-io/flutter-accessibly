@@ -18,7 +18,7 @@ class AccessiblyColorFilter extends StatelessWidget {
       child: ColorFiltered(
           colorFilter: ColorFilter.mode(
               accessibilitySettings.monochrome
-                  ? Colors.grey
+                  ? Colors.blue
                   : Colors.transparent,
               BlendMode.saturation),
           child: child),

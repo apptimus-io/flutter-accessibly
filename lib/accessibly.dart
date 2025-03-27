@@ -32,7 +32,7 @@ class Accessibly extends ChangeNotifier {
   TextAlign _textAlignment = TextAlign.left;
   bool _monochrome = false;
   bool _systemMode = false;
-  bool _isDark = false;
+  bool _isDark = true;
   SharedPreferences? storage;
 
   // Getter methods for accessing properties
@@ -94,7 +94,7 @@ class Accessibly extends ChangeNotifier {
   init() async {
     // After we re run the appS
     storage = await SharedPreferences.getInstance();
-    _isDark = storage?.getBool("isDark") ?? false;
+    _isDark = storage?.getBool("isDark") ?? true;
     _systemMode = storage?.getBool("isSystem") ?? false;
     _imageVisibility = storage?.getBool("imageVisibility") ?? true;
     _headingColor = stringToColor(storage?.getString("headingColor"));
